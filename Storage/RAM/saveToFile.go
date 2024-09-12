@@ -2,45 +2,31 @@ package RAM
 
 import (
 	"dankey/DTO"
-	"encoding/gob"
 	"fmt"
+	"go.mongodb.org/mongo-driver/bson"
 	"os"
 )
 
 func (provider *RamProvider) SaveToFile(dto DTO.SaveToFileRequestDTO) DTO.SaveToFileResponseDTO {
 	file, err := os.OpenFile(dto.FilePath, os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		return DTO.SaveToFileResponseDTO{
-			ResponseDTO: DTO.ResponseDTO{
-				Success: false,
-				Message: err.Error(),
-			},
-			FilePath: dto.FilePath,
-		}
+		return defaultSaveErrorResponse(err, &dto)
 	}
 	defer file.Close()
 
-	var encoder = gob.NewEncoder(file)
-	err = encoder.Encode(provider.storage)
+	marshal, err := bson.Marshal(provider.storage)
 	if err != nil {
-		return DTO.SaveToFileResponseDTO{
-			ResponseDTO: DTO.ResponseDTO{
-				Success: false,
-				Message: err.Error(),
-			},
-			FilePath: dto.FilePath,
-		}
+		return defaultSaveErrorResponse(err, &dto)
+	}
+
+	_, err = file.Write(marshal)
+	if err != nil {
+		return defaultSaveErrorResponse(err, &dto)
 	}
 
 	fileStat, err := file.Stat()
 	if err != nil {
-		return DTO.SaveToFileResponseDTO{
-			ResponseDTO: DTO.ResponseDTO{
-				Success: false,
-				Message: err.Error(),
-			},
-			FilePath: dto.FilePath,
-		}
+		return defaultSaveErrorResponse(err, &dto)
 	}
 
 	return DTO.SaveToFileResponseDTO{
@@ -51,6 +37,16 @@ func (provider *RamProvider) SaveToFile(dto DTO.SaveToFileRequestDTO) DTO.SaveTo
 		Size:              fileStat.Size(),
 		SizeHumanReadable: byteCountSI(fileStat.Size()),
 		FilePath:          dto.FilePath,
+	}
+}
+
+func defaultSaveErrorResponse(err error, dto *DTO.SaveToFileRequestDTO) DTO.SaveToFileResponseDTO {
+	return DTO.SaveToFileResponseDTO{
+		ResponseDTO: DTO.ResponseDTO{
+			Success: false,
+			Message: err.Error(),
+		},
+		FilePath: dto.FilePath,
 	}
 }
 
