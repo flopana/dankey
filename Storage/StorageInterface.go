@@ -9,4 +9,5 @@ type Provider interface {
 	Increment(dto DTO.IncrementRequestDTO) DTO.IncrementResponseDTO
 	Decrement(dto DTO.DecrementRequestDTO) DTO.DecrementResponseDTO
 	SaveToFile(dto DTO.SaveToFileRequestDTO) DTO.SaveToFileResponseDTO
+	RetrieveFromFile(dto DTO.RetrieveFromFileRequestDTO) DTO.RetrieveFromFileResponseDTO
 }

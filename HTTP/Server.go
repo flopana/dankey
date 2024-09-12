@@ -26,6 +26,7 @@ func (s *Server) Start() {
 	//e.GET("/increment", s.Increment)
 	//e.GET("/decrement", s.Decrement)
 	s.Echo.POST("/saveToFile", s.SaveToFile)
+	s.Echo.POST("/retrieveFromFile", s.RetrieveFromFile)
 	s.Echo.Logger.Fatal(s.Echo.Start(":6969"))
 }
 
@@ -72,4 +73,19 @@ func (s *Server) SaveToFile(c echo.Context) error {
 
 	saveToFileResponseDTO := s.Provider.SaveToFile(saveToFileRequestDTO)
 	return c.JSON(http.StatusOK, saveToFileResponseDTO)
+}
+
+func (s *Server) RetrieveFromFile(c echo.Context) error {
+	var retrieveFromFileRequestDTO DTO.RetrieveFromFileRequestDTO
+	err := c.Bind(&retrieveFromFileRequestDTO)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, DTO.ResponseDTO{
+			Success: false,
+			Message: err.Error(),
+		})
+	}
+
+	retrieveFromFileResponseDTO := s.Provider.RetrieveFromFile(retrieveFromFileRequestDTO)
+	return c.JSON(http.StatusOK, retrieveFromFileResponseDTO)
 }
