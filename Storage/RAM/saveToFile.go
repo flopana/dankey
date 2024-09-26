@@ -14,6 +14,11 @@ func (provider *RamProvider) SaveToFile(dto DTO.SaveToFileRequestDTO) DTO.SaveTo
 	}
 	defer file.Close()
 
+	err = file.Truncate(0)
+	if err != nil {
+		return defaultSaveErrorResponse(err, &dto)
+	}
+
 	marshal, err := bson.Marshal(provider.storage)
 	if err != nil {
 		return defaultSaveErrorResponse(err, &dto)
