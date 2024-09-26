@@ -25,8 +25,17 @@ func NewServer(provider Storage.Provider, config *Config.Config) *Server {
 }
 
 func (s *Server) Start() {
-	s.Echo.Use(middleware.BasicAuth(func(username string, password string, c echo.Context) (bool, error) {
-		// Be careful to use constant time comparison to prevent timing attacks
+	s.Echo.HideBanner = true
+
+	s.Echo.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Welcome to Dankey!")
+	})
+	s.Echo.GET("/routes", func(c echo.Context) error {
+		return c.JSONPretty(http.StatusOK, s.Echo.Routes(), "  ")
+	})
+
+	basicAuthGroup := s.Echo.Group("")
+	basicAuthGroup.Use(middleware.BasicAuth(func(username string, password string, c echo.Context) (bool, error) {
 		if subtle.ConstantTimeCompare([]byte(username), []byte(s.conf.Username)) == 1 &&
 			subtle.ConstantTimeCompare([]byte(password), []byte(s.conf.Password)) == 1 {
 			return true, nil
@@ -34,72 +43,29 @@ func (s *Server) Start() {
 		return false, nil
 	}))
 
-	s.Echo.PUT("/put", s.Put)
-	s.Echo.GET("/get", s.Get)
-	//e.DELETE("/delete", s.Delete)
-	//e.GET("/increment", s.Increment)
-	//e.GET("/decrement", s.Decrement)
-	s.Echo.POST("/saveToFile", s.SaveToFile)
-	s.Echo.POST("/retrieveFromFile", s.RetrieveFromFile)
+	basicAuthGroup.PUT("/put", genHandlerFunc[DTO.PutRequestDTO, DTO.PutResponseDTO](s.Provider.Put))
+	basicAuthGroup.GET("/get", genHandlerFunc[DTO.GetRequestDTO, DTO.GetResponseDTO](s.Provider.Get))
+	basicAuthGroup.DELETE("/delete", genHandlerFunc[DTO.DeleteRequestDTO, DTO.DeleteResponseDTO](s.Provider.Delete))
+	basicAuthGroup.POST("/increment", genHandlerFunc[DTO.IncrementRequestDTO, DTO.IncrementResponseDTO](s.Provider.Increment))
+	basicAuthGroup.POST("/decrement", genHandlerFunc[DTO.DecrementRequestDTO, DTO.DecrementResponseDTO](s.Provider.Decrement))
+	basicAuthGroup.POST("/saveToFile", genHandlerFunc[DTO.SaveToFileRequestDTO, DTO.SaveToFileResponseDTO](s.Provider.SaveToFile))
+	basicAuthGroup.POST("/retrieveFromFile", genHandlerFunc[DTO.RetrieveFromFileRequestDTO, DTO.RetrieveFromFileResponseDTO](s.Provider.RetrieveFromFile))
 	s.Echo.Logger.Fatal(s.Echo.Start(":6969"))
 }
 
-func (s *Server) Put(c echo.Context) error {
-	var putRequestDTO DTO.PutRequestDTO
-	err := c.Bind(&putRequestDTO)
+func genHandlerFunc[ReqT DTO.RequestDTOType, ResT DTO.ResponseDTOType](f func(ReqT) ResT) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var req ReqT
+		err := c.Bind(&req)
 
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, DTO.ResponseDTO{
-			Success: false,
-			Message: err.Error(),
-		})
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, DTO.ResponseDTO{
+				Success: false,
+				Message: err.Error(),
+			})
+		}
+
+		res := f(req)
+		return c.JSON(http.StatusOK, res)
 	}
-
-	putResponseDTO := s.Provider.Put(putRequestDTO)
-	return c.JSON(http.StatusOK, putResponseDTO)
-}
-
-func (s *Server) Get(c echo.Context) error {
-	var getRequestDTO DTO.GetRequestDTO
-	err := c.Bind(&getRequestDTO)
-
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, DTO.ResponseDTO{
-			Success: false,
-			Message: err.Error(),
-		})
-	}
-
-	getResponseDTO := s.Provider.Get(getRequestDTO)
-	return c.JSON(http.StatusOK, getResponseDTO)
-}
-
-func (s *Server) SaveToFile(c echo.Context) error {
-	var saveToFileRequestDTO DTO.SaveToFileRequestDTO
-	err := c.Bind(&saveToFileRequestDTO)
-
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, DTO.ResponseDTO{
-			Success: false,
-			Message: err.Error(),
-		})
-	}
-
-	saveToFileResponseDTO := s.Provider.SaveToFile(saveToFileRequestDTO)
-	return c.JSON(http.StatusOK, saveToFileResponseDTO)
-}
-
-func (s *Server) RetrieveFromFile(c echo.Context) error {
-	var retrieveFromFileRequestDTO DTO.RetrieveFromFileRequestDTO
-	err := c.Bind(&retrieveFromFileRequestDTO)
-
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, DTO.ResponseDTO{
-			Success: false,
-			Message: err.Error(),
-		})
-	}
-
-	retrieveFromFileResponseDTO := s.Provider.RetrieveFromFile(retrieveFromFileRequestDTO)
-	return c.JSON(http.StatusOK, retrieveFromFileResponseDTO)
 }
