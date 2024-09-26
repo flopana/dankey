@@ -1,7 +1,7 @@
 package RAM_test
 
 import (
-	"dankey/Storage/DTO"
+	"dankey/DTO"
 	"dankey/Storage/RAM"
 	"testing"
 )
