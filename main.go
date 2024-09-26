@@ -1,24 +1,22 @@
 package main
 
 import (
-	"dankey/DTO"
+	"dankey/Config"
 	"dankey/HTTP"
 	"dankey/Storage"
 	"dankey/Storage/RAM"
+	"fmt"
 )
 
 func main() {
-	var provider Storage.Provider = RAM.NewRamProvider()
-	provider.Get(DTO.GetRequestDTO{
-		Database: 1,
-		Key:      "hi",
-	})
-	provider.Put(DTO.PutRequestDTO{
-		Database: 0,
-		Key:      "hi",
-		Value:    "hello",
-	})
+	var config, err = Config.NewConfig()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-	var server = HTTP.NewServer(provider)
+	var provider Storage.Provider = RAM.NewRamProvider()
+
+	var server = HTTP.NewServer(provider, config)
 	server.Start()
 }
