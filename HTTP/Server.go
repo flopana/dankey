@@ -26,6 +26,7 @@ func NewServer(provider Storage.Provider, config *Config.Config) *Server {
 
 func (s *Server) Start() {
 	s.Echo.HideBanner = true
+	s.Echo.HidePort = true
 
 	s.Echo.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Welcome to Dankey!")
