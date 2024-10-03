@@ -17,17 +17,19 @@ func (provider *RamProvider) Decrement(request DTO.DecrementRequestDTO) DTO.Decr
 		}
 	}
 
-	if checkIfInt(provider.storage[request.Database][request.Key]) == false {
+	value := provider.storage[request.Database][request.Key]
+	ok, convertedValue := checkIfInt(value)
+
+	if !ok {
 		return DTO.DecrementResponseDTO{
 			ResponseDTO: DTO.ResponseDTO{
 				Success: false,
 				Message: "Key is not an integer",
 			},
-			Value: 0,
 		}
 	}
 
-	provider.storage[request.Database][request.Key] = provider.storage[request.Database][request.Key].(int) - 1
+	provider.storage[request.Database][request.Key] = convertedValue.(int) - 1
 
 	return DTO.DecrementResponseDTO{
 		ResponseDTO: DTO.ResponseDTO{

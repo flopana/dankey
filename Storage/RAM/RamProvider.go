@@ -29,11 +29,21 @@ func (provider *RamProvider) checkIfDatabaseExists(datatabase uint) bool {
 	return false
 }
 
-func checkIfInt(value any) bool {
-	switch value.(type) {
+func checkIfInt(val any) (bool, any) {
+	switch v := val.(type) {
 	case int:
-		return true
+		return true, v
+	case float64:
+		if v == float64(int(v)) {
+			return true, int(v) // Convert to int if no information is lost
+		}
+		return false, nil
+	case float32:
+		if v == float32(int(v)) {
+			return true, int(v) // Convert to int if no information is lost
+		}
+		return false, nil
 	default:
-		return false
+		return false, nil
 	}
 }
