@@ -7,10 +7,8 @@ import (
 	"dankey/Storage"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"net/http"
-	"os"
 	"sync"
 )
 
@@ -29,8 +27,8 @@ func NewServer(provider Storage.Provider, config *Config.Config) *Server {
 }
 
 func (s *Server) Start() {
+	log.Info().Msg("Starting Dankey server")
 	wg := sync.WaitGroup{}
-	configureLogger()
 	s.configureEcho()
 	s.setRoutes()
 	s.startWithWaitGroup(&wg)
@@ -43,7 +41,8 @@ func (s *Server) startWithWaitGroup(wg *sync.WaitGroup) {
 		wg.Add(1)
 		defer wg.Done()
 		if err := s.Echo.Start(":6969"); err != nil {
-			s.Echo.Logger.Error("Error starting Echo server: ", err)
+			log.Err(err).Msg("")
+			log.Fatal().Msg("Dankey server failed to start up")
 		}
 	}(wg)
 }
@@ -86,13 +85,6 @@ func (s *Server) setRoutes() {
 func (s *Server) configureEcho() {
 	s.Echo.HideBanner = true
 	s.Echo.HidePort = true
-}
-
-func configureLogger() {
-	log.Logger = log.Output(zerolog.ConsoleWriter{
-		Out:        os.Stderr,
-		TimeFormat: zerolog.TimeFieldFormat,
-	})
 }
 
 func genHandlerFunc[ReqT DTO.RequestDTOType, ResT DTO.ResponseDTOType](f func(ReqT) ResT) echo.HandlerFunc {

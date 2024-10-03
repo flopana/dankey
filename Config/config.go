@@ -2,6 +2,7 @@ package Config
 
 import (
 	"encoding/json"
+	"github.com/rs/zerolog/log"
 	"os"
 )
 
@@ -25,6 +26,7 @@ func NewConfigWithPath(filePath string) (*Config, error) {
 	// unmashal the data
 	err = json.NewDecoder(file).Decode(&config)
 	if err != nil {
+		log.Err(err).Msg("")
 		return nil, err
 	}
 
