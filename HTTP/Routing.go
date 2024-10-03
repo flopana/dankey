@@ -12,9 +12,6 @@ func (s *Server) setRoutes() {
 	s.Echo.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Welcome to Dankey!")
 	})
-	s.Echo.GET("/routes", func(c echo.Context) error {
-		return c.JSONPretty(http.StatusOK, s.Echo.Routes(), "  ")
-	})
 
 	basicAuthGroup := s.Echo.Group("")
 	basicAuthGroup.Use(middleware.BasicAuth(func(username string, password string, c echo.Context) (bool, error) {
