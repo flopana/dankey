@@ -3,6 +3,7 @@ package RAM
 import (
 	"dankey/DTO"
 	"fmt"
+	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson"
 	"os"
 )
@@ -34,7 +35,7 @@ func (provider *RamProvider) SaveToFile(dto DTO.SaveToFileRequestDTO) DTO.SaveTo
 		return defaultSaveErrorResponse(err, &dto)
 	}
 
-	return DTO.SaveToFileResponseDTO{
+	res := DTO.SaveToFileResponseDTO{
 		ResponseDTO: DTO.ResponseDTO{
 			Success: true,
 			Message: "Data saved to file",
@@ -43,9 +44,19 @@ func (provider *RamProvider) SaveToFile(dto DTO.SaveToFileRequestDTO) DTO.SaveTo
 		SizeHumanReadable: byteCountSI(fileStat.Size()),
 		FilePath:          dto.FilePath,
 	}
+
+	log.Info().
+		Int64("Size", res.Size).
+		Str("SizeHumanReadable", res.SizeHumanReadable).
+		Str("FilePath", res.FilePath).
+		Msg("Data saved to file")
+
+	return res
 }
 
 func defaultSaveErrorResponse(err error, dto *DTO.SaveToFileRequestDTO) DTO.SaveToFileResponseDTO {
+	log.Error().Msg("Error saving data to file")
+	log.Err(err).Msg("")
 	return DTO.SaveToFileResponseDTO{
 		ResponseDTO: DTO.ResponseDTO{
 			Success: false,

@@ -7,7 +7,11 @@ import (
 	"dankey/Storage"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"net/http"
+	"os"
+	"sync"
 )
 
 type Server struct {
@@ -25,9 +29,35 @@ func NewServer(provider Storage.Provider, config *Config.Config) *Server {
 }
 
 func (s *Server) Start() {
-	s.Echo.HideBanner = true
-	s.Echo.HidePort = true
+	wg := sync.WaitGroup{}
+	configureLogger()
+	s.configureEcho()
+	s.setRoutes()
+	s.startWithWaitGroup(&wg)
+	testDankeyServer()
+	wg.Wait()
+}
 
+func (s *Server) startWithWaitGroup(wg *sync.WaitGroup) {
+	go func(wg *sync.WaitGroup) {
+		wg.Add(1)
+		defer wg.Done()
+		if err := s.Echo.Start(":6969"); err != nil {
+			s.Echo.Logger.Error("Error starting Echo server: ", err)
+		}
+	}(wg)
+}
+
+func testDankeyServer() {
+	_, err := http.Get("http://localhost:6969")
+	if err != nil {
+		log.Err(err).Msg("")
+		log.Fatal().Msg("Dankey server failed to start up")
+	}
+	log.Info().Msg("Dankey server started up successfully")
+}
+
+func (s *Server) setRoutes() {
 	s.Echo.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Welcome to Dankey!")
 	})
@@ -51,7 +81,18 @@ func (s *Server) Start() {
 	basicAuthGroup.POST("/decrement", genHandlerFunc[DTO.DecrementRequestDTO, DTO.DecrementResponseDTO](s.Provider.Decrement))
 	basicAuthGroup.POST("/saveToFile", genHandlerFunc[DTO.SaveToFileRequestDTO, DTO.SaveToFileResponseDTO](s.Provider.SaveToFile))
 	basicAuthGroup.POST("/retrieveFromFile", genHandlerFunc[DTO.RetrieveFromFileRequestDTO, DTO.RetrieveFromFileResponseDTO](s.Provider.RetrieveFromFile))
-	s.Echo.Logger.Fatal(s.Echo.Start(":6969"))
+}
+
+func (s *Server) configureEcho() {
+	s.Echo.HideBanner = true
+	s.Echo.HidePort = true
+}
+
+func configureLogger() {
+	log.Logger = log.Output(zerolog.ConsoleWriter{
+		Out:        os.Stderr,
+		TimeFormat: zerolog.TimeFieldFormat,
+	})
 }
 
 func genHandlerFunc[ReqT DTO.RequestDTOType, ResT DTO.ResponseDTOType](f func(ReqT) ResT) echo.HandlerFunc {

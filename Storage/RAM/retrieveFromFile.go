@@ -2,6 +2,7 @@ package RAM
 
 import (
 	"dankey/DTO"
+	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson"
 	"os"
 )
@@ -27,7 +28,7 @@ func (provider *RamProvider) RetrieveFromFile(dto DTO.RetrieveFromFileRequestDTO
 		return defaultRetrieveErrorResponse(err, &dto)
 	}
 
-	return DTO.RetrieveFromFileResponseDTO{
+	res := DTO.RetrieveFromFileResponseDTO{
 		ResponseDTO: DTO.ResponseDTO{
 			Success: true,
 			Message: "Data retrieved from file",
@@ -36,6 +37,14 @@ func (provider *RamProvider) RetrieveFromFile(dto DTO.RetrieveFromFileRequestDTO
 		SizeHumanReadable: byteCountSI(fileStat.Size()),
 		FilePath:          dto.FilePath,
 	}
+
+	log.Info().
+		Int64("Size", res.Size).
+		Str("SizeHumanReadable", res.SizeHumanReadable).
+		Str("FilePath", res.FilePath).
+		Msg("Data retrieved from file")
+
+	return res
 }
 
 func defaultRetrieveErrorResponse(err error, dto *DTO.RetrieveFromFileRequestDTO) DTO.RetrieveFromFileResponseDTO {
