@@ -1,4 +1,5 @@
 {
   "username": "admin",
-  "password": "postit"
+  "password": "postit",
+  "port": "6969"
 }
