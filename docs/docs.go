@@ -85,7 +85,7 @@ const docTemplate = `{
         },
         "/get": {
             "get": {
-                "description": "Retrieve the JSON Onject stored under a key",
+                "description": "Retrieve the JSON Object stored under a key",
                 "consumes": [
                     "application/json"
                 ],

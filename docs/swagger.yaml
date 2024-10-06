@@ -182,7 +182,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Retrieve the JSON Onject stored under a key
+      description: Retrieve the JSON Object stored under a key
       operationId: get
       parameters:
       - description: GetRequestDTO
