@@ -3,6 +3,7 @@ package HTTP
 import (
 	"crypto/subtle"
 	"dankey/DTO"
+	"dankey/public"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/swaggo/echo-swagger"
@@ -19,11 +20,11 @@ func (s *Server) setRoutes() {
 	//	@Description	Welcome to Dankey!
 	//	@ID				welcome
 	//	@Produce		html
-	//	@Success		200	{string}	string
+	//	@Success		200		{string}	string
 	//	@Router			/ [get]
 	s.Echo.GET("/", func(c echo.Context) error {
 		// return index.html file from the public directory
-		return c.File("public/index.html")
+		return c.HTML(http.StatusOK, public.IndexHtml)
 	})
 
 	s.Echo.GET("/swagger", func(c echo.Context) error {
@@ -99,7 +100,7 @@ func (s *Server) put(c echo.Context) error {
 // Get a key-value pair
 //
 //	@Summary		Get a key-value pair
-//	@Description	Retrieve the JSON Onject stored under a key
+//	@Description	Retrieve the JSON Object stored under a key
 //	@ID				get
 //	@Accept			json
 //	@Produce		json

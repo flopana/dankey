@@ -1,3 +1,8 @@
+package public
+
+// IndexHtml
+// Hardcoded index.html so the binary can be run standalone
+const IndexHtml = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,3 +15,4 @@
 <p>For more information, visit the <a href="/swagger">API Documentation</a></p>
 </body>
 </html>
+`
