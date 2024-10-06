@@ -64,4 +64,5 @@ func (s *Server) testDankeyServer() {
 		log.Fatal().Msg("Dankey server failed to start up")
 	}
 	log.Info().Msgf("Dankey server started successfully on :%s", s.conf.Port)
+	log.Info().Msgf("Visit http://localhost:%s for the index page", s.conf.Port)
 }
