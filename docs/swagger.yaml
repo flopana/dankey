@@ -1,0 +1,294 @@
+definitions:
+  DTO.DecrementRequestDTO:
+    properties:
+      database:
+        type: integer
+      key:
+        type: string
+    type: object
+  DTO.DecrementResponseDTO:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+      value:
+        type: integer
+    type: object
+  DTO.DeleteRequestDTO:
+    properties:
+      database:
+        type: integer
+      key:
+        type: string
+    type: object
+  DTO.DeleteResponseDTO:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  DTO.GetRequestDTO:
+    properties:
+      database:
+        type: integer
+      key:
+        type: string
+    required:
+    - database
+    - key
+    type: object
+  DTO.GetResponseDTO:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+      value: {}
+    type: object
+  DTO.IncrementRequestDTO:
+    properties:
+      database:
+        type: integer
+      key:
+        type: string
+    type: object
+  DTO.IncrementResponseDTO:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+      value:
+        type: integer
+    type: object
+  DTO.PutRequestDTO:
+    properties:
+      database:
+        type: integer
+      key:
+        type: string
+      value: {}
+    required:
+    - database
+    - key
+    - value
+    type: object
+  DTO.PutResponseDTO:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  DTO.ResponseDTO:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  DTO.RetrieveFromFileRequestDTO:
+    properties:
+      filePath:
+        type: string
+    type: object
+  DTO.RetrieveFromFileResponseDTO:
+    properties:
+      filePath:
+        type: string
+      message:
+        type: string
+      size:
+        type: integer
+      sizeHumanReadable:
+        type: string
+      success:
+        type: boolean
+    type: object
+  DTO.SaveToFileRequestDTO:
+    properties:
+      filePath:
+        type: string
+    type: object
+  DTO.SaveToFileResponseDTO:
+    properties:
+      filePath:
+        type: string
+      message:
+        type: string
+      size:
+        type: integer
+      sizeHumanReadable:
+        type: string
+      success:
+        type: boolean
+    type: object
+info:
+  contact: {}
+  description: This is a simple key-value store that allows you to store any JSON-serializable
+    data under a key.
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+  title: Dankey API
+  version: "1.0"
+paths:
+  /decrement:
+    post:
+      consumes:
+      - application/json
+      description: Decrement the value of a key by 1. If they value is not an integer,
+        an error will be returned.
+      operationId: decrement
+      parameters:
+      - description: DecrementRequestDTO
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/DTO.DecrementRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/DTO.DecrementResponseDTO'
+      summary: Decrement a key-value pair
+  /delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a key-value pair
+      operationId: delete
+      parameters:
+      - description: DeleteRequestDTO
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/DTO.DeleteRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/DTO.DeleteResponseDTO'
+      summary: Delete a key-value pair
+  /get:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve the JSON Onject stored under a key
+      operationId: get
+      parameters:
+      - description: GetRequestDTO
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/DTO.GetRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/DTO.GetResponseDTO'
+      summary: Get a key-value pair
+  /increment:
+    post:
+      consumes:
+      - application/json
+      description: Increment the value of a key by 1. If they value is not an integer,
+        an error will be returned.
+      operationId: increment
+      parameters:
+      - description: IncrementRequestDTO
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/DTO.IncrementRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/DTO.IncrementResponseDTO'
+      summary: Increment a key-value pair
+  /put:
+    put:
+      consumes:
+      - application/json
+      description: Put any JSON-serializable data under a key
+      operationId: put
+      parameters:
+      - description: PutRequestDTO
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/DTO.PutRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/DTO.PutResponseDTO'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/DTO.ResponseDTO'
+      summary: Put a key-value pair
+  /retrieveFromFile:
+    post:
+      consumes:
+      - application/json
+      description: Retrieve the state of the database from a file
+      operationId: retrieveFromFile
+      parameters:
+      - description: RetrieveFromFileRequestDTO
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/DTO.RetrieveFromFileRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/DTO.RetrieveFromFileResponseDTO'
+      summary: Retrieve from file
+  /saveToFile:
+    post:
+      consumes:
+      - application/json
+      description: Save the current state of the database to a file
+      operationId: saveToFile
+      parameters:
+      - description: SaveToFileRequestDTO
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/DTO.SaveToFileRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/DTO.SaveToFileResponseDTO'
+      summary: Save to file
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

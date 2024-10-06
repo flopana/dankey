@@ -15,6 +15,14 @@ type Server struct {
 	conf     *Config.Config
 }
 
+// NewServer
+//
+//	@title						Dankey API
+//	@version					1.0
+//	@description				This is a simple key-value store that allows you to store any JSON-serializable data under a key.
+//	@license.name				MIT
+//	@license.url				http://opensource.org/licenses/MIT
+//	@securityDefinitions.basic	BasicAuth
 func NewServer(provider Storage.Provider, config *Config.Config) *Server {
 	return &Server{
 		Provider: provider,
