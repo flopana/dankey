@@ -20,7 +20,7 @@ func (s *Server) setRoutes() {
 	//	@Description	Welcome to Dankey!
 	//	@ID				welcome
 	//	@Produce		html
-	//	@Success		200		{string}	string
+	//	@Success		200	{string}	string
 	//	@Router			/ [get]
 	s.Echo.GET("/", func(c echo.Context) error {
 		// return index.html file from the public directory
@@ -84,106 +84,106 @@ func generalHandlerFunc[ReqT DTO.RequestDTOType, ResT DTO.ResponseDTOType](c ech
 
 // Put a key-value pair
 //
-//		@Summary		Put a key-value pair
-//		@Description	Put any JSON-serializable data under a key
-//		@ID				put
-//		@Accept			json
-//		@Produce		json
-//		@Param			request	body		DTO.PutRequestDTO	true	"PutRequestDTO"
-//		@Success		200		{object}	DTO.PutResponseDTO
-//		@Failure		401		{object}	DTO.ResponseDTO
-//		@Router			/put [put]
-//	 @Security		BasicAuth
+//	@Summary		Put a key-value pair
+//	@Description	Put any JSON-serializable data under a key
+//	@ID				put
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		DTO.PutRequestDTO	true	"PutRequestDTO"
+//	@Success		200		{object}	DTO.PutResponseDTO
+//	@Failure		401		{object}	DTO.ResponseDTO
+//	@Router			/put [put]
+//	@Security		BasicAuth
 func (s *Server) put(c echo.Context) error {
 	return generalHandlerFunc(c, s.Provider.Put)
 }
 
 // Get a key-value pair
 //
-//		@Summary		Get a key-value pair
-//		@Description	Retrieve the JSON Object stored under a key
-//		@ID				get
-//		@Accept			json
-//		@Produce		json
-//		@Param			request	body		DTO.GetRequestDTO	true	"GetRequestDTO"
-//		@Success		200		{object}	DTO.GetResponseDTO
-//		@Router			/get [get]
-//	 @Security		BasicAuth
+//	@Summary		Get a key-value pair
+//	@Description	Retrieve the JSON Object stored under a key
+//	@ID				get
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		DTO.GetRequestDTO	true	"GetRequestDTO"
+//	@Success		200		{object}	DTO.GetResponseDTO
+//	@Router			/get [get]
+//	@Security		BasicAuth
 func (s *Server) get(c echo.Context) error {
 	return generalHandlerFunc(c, s.Provider.Get)
 }
 
 // Delete a key-value pair
 //
-//		@Summary		Delete a key-value pair
-//		@Description	Delete a key-value pair
-//		@ID				delete
-//		@Accept			json
-//		@Produce		json
-//		@Param			request	body		DTO.DeleteRequestDTO	true	"DeleteRequestDTO"
-//		@Success		200		{object}	DTO.DeleteResponseDTO
-//		@Router			/delete [delete]
-//	 @Security		BasicAuth
+//	@Summary		Delete a key-value pair
+//	@Description	Delete a key-value pair
+//	@ID				delete
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		DTO.DeleteRequestDTO	true	"DeleteRequestDTO"
+//	@Success		200		{object}	DTO.DeleteResponseDTO
+//	@Router			/delete [delete]
+//	@Security		BasicAuth
 func (s *Server) delete(c echo.Context) error {
 	return generalHandlerFunc(c, s.Provider.Delete)
 }
 
 // Increment a key-value pair
 //
-//		@Summary		Increment a key-value pair
-//		@Description	Increment the value of a key by 1. If they value is not an integer, an error will be returned.
-//		@ID				increment
-//		@Accept			json
-//		@Produce		json
-//		@Param			request	body		DTO.IncrementRequestDTO	true	"IncrementRequestDTO"
-//		@Success		200		{object}	DTO.IncrementResponseDTO
-//		@Router			/increment [post]
-//	 @Security		BasicAuth
+//	@Summary		Increment a key-value pair
+//	@Description	Increment the value of a key by 1. If they value is not an integer, an error will be returned.
+//	@ID				increment
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		DTO.IncrementRequestDTO	true	"IncrementRequestDTO"
+//	@Success		200		{object}	DTO.IncrementResponseDTO
+//	@Router			/increment [post]
+//	@Security		BasicAuth
 func (s *Server) increment(c echo.Context) error {
 	return generalHandlerFunc(c, s.Provider.Increment)
 }
 
 // Decrement a key-value pair
 //
-//		@Summary		Decrement a key-value pair
-//		@Description	Decrement the value of a key by 1. If they value is not an integer, an error will be returned.
-//		@ID				decrement
-//		@Accept			json
-//		@Produce		json
-//		@Param			request	body		DTO.DecrementRequestDTO	true	"DecrementRequestDTO"
-//		@Success		200		{object}	DTO.DecrementResponseDTO
-//		@Router			/decrement [post]
-//	 @Security		BasicAuth
+//	@Summary		Decrement a key-value pair
+//	@Description	Decrement the value of a key by 1. If they value is not an integer, an error will be returned.
+//	@ID				decrement
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		DTO.DecrementRequestDTO	true	"DecrementRequestDTO"
+//	@Success		200		{object}	DTO.DecrementResponseDTO
+//	@Router			/decrement [post]
+//	@Security		BasicAuth
 func (s *Server) decrement(c echo.Context) error {
 	return generalHandlerFunc(c, s.Provider.Decrement)
 }
 
 // Save to file
 //
-//		@Summary		Save to file
-//		@Description	Save the current state of the database to a file
-//		@ID				saveToFile
-//		@Accept			json
-//		@Produce		json
-//		@Param			request	body		DTO.SaveToFileRequestDTO	true	"SaveToFileRequestDTO"
-//		@Success		200		{object}	DTO.SaveToFileResponseDTO
-//		@Router			/saveToFile [post]
-//	 @Security		BasicAuth
+//	@Summary		Save to file
+//	@Description	Save the current state of the database to a file
+//	@ID				saveToFile
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		DTO.SaveToFileRequestDTO	true	"SaveToFileRequestDTO"
+//	@Success		200		{object}	DTO.SaveToFileResponseDTO
+//	@Router			/saveToFile [post]
+//	@Security		BasicAuth
 func (s *Server) saveToFile(c echo.Context) error {
 	return generalHandlerFunc(c, s.Provider.SaveToFile)
 }
 
 // Retrieve from file
 //
-//		@Summary		Retrieve from file
-//		@Description	Retrieve the state of the database from a file
-//		@ID				retrieveFromFile
-//		@Accept			json
-//		@Produce		json
-//		@Param			request	body		DTO.RetrieveFromFileRequestDTO	true	"RetrieveFromFileRequestDTO"
-//		@Success		200		{object}	DTO.RetrieveFromFileResponseDTO
-//		@Router			/retrieveFromFile [post]
-//	 @Security		BasicAuth
+//	@Summary		Retrieve from file
+//	@Description	Retrieve the state of the database from a file
+//	@ID				retrieveFromFile
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		DTO.RetrieveFromFileRequestDTO	true	"RetrieveFromFileRequestDTO"
+//	@Success		200		{object}	DTO.RetrieveFromFileResponseDTO
+//	@Router			/retrieveFromFile [post]
+//	@Security		BasicAuth
 func (s *Server) retrieveFromFile(c echo.Context) error {
 	return generalHandlerFunc(c, s.Provider.RetrieveFromFile)
 }
