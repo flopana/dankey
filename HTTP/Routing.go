@@ -50,23 +50,6 @@ func (s *Server) setRoutes() {
 	basicAuthGroup.POST("/retrieveFromFile", s.retrieveFromFile)
 }
 
-func genHandlerFunc[ReqT DTO.RequestDTOType, ResT DTO.ResponseDTOType](f func(ReqT) ResT) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		var req ReqT
-		err := c.Bind(&req)
-
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, DTO.ResponseDTO{
-				Success: false,
-				Message: err.Error(),
-			})
-		}
-
-		res := f(req)
-		return c.JSON(http.StatusOK, res)
-	}
-}
-
 func generalHandlerFunc[ReqT DTO.RequestDTOType, ResT DTO.ResponseDTOType](c echo.Context, f func(ReqT) ResT) error {
 	var req ReqT
 	err := c.Bind(&req)
