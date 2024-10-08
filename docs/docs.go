@@ -521,6 +521,10 @@ const docTemplate = `{
         "BasicAuth": {
             "type": "basic"
         }
+    },
+    "externalDocs": {
+        "description": "Visit the GitHub repository",
+        "url": "https://github.com/flopana/dankey"
     }
 }`
 

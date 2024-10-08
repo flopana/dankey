@@ -125,6 +125,9 @@ definitions:
       success:
         type: boolean
     type: object
+externalDocs:
+  description: Visit the GitHub repository
+  url: https://github.com/flopana/dankey
 info:
   contact: {}
   description: This is a simple key-value store that allows you to store any JSON-serializable

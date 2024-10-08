@@ -20,6 +20,8 @@ type Server struct {
 //	@title						Dankey API
 //	@version					1.0
 //	@description				This is a simple key-value store that allows you to store any JSON-serializable data under a key.
+//	@externalDocs.description	Visit the GitHub repository
+//	@externalDocs.url			https://github.com/flopana/dankey
 //	@license.name				MPL
 //	@license.url				https://www.mozilla.org/en-US/MPL/2.0/
 //	@securityDefinitions.basic	BasicAuth
