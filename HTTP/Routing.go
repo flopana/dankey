@@ -90,6 +90,7 @@ func (s *Server) put(c echo.Context) error {
 //	@Produce		json
 //	@Param			request	body		DTO.GetRequestDTO	true	"GetRequestDTO"
 //	@Success		200		{object}	DTO.GetResponseDTO
+//	@Failure		401		{object}	DTO.ResponseDTO
 //	@Router			/get [get]
 //	@Security		BasicAuth
 func (s *Server) get(c echo.Context) error {
@@ -105,6 +106,7 @@ func (s *Server) get(c echo.Context) error {
 //	@Produce		json
 //	@Param			request	body		DTO.DeleteRequestDTO	true	"DeleteRequestDTO"
 //	@Success		200		{object}	DTO.DeleteResponseDTO
+//	@Failure		401		{object}	DTO.ResponseDTO
 //	@Router			/delete [delete]
 //	@Security		BasicAuth
 func (s *Server) delete(c echo.Context) error {
@@ -120,6 +122,7 @@ func (s *Server) delete(c echo.Context) error {
 //	@Produce		json
 //	@Param			request	body		DTO.IncrementRequestDTO	true	"IncrementRequestDTO"
 //	@Success		200		{object}	DTO.IncrementResponseDTO
+//	@Failure		401		{object}	DTO.ResponseDTO
 //	@Router			/increment [post]
 //	@Security		BasicAuth
 func (s *Server) increment(c echo.Context) error {
@@ -135,6 +138,7 @@ func (s *Server) increment(c echo.Context) error {
 //	@Produce		json
 //	@Param			request	body		DTO.DecrementRequestDTO	true	"DecrementRequestDTO"
 //	@Success		200		{object}	DTO.DecrementResponseDTO
+//	@Failure		401		{object}	DTO.ResponseDTO
 //	@Router			/decrement [post]
 //	@Security		BasicAuth
 func (s *Server) decrement(c echo.Context) error {
@@ -150,6 +154,7 @@ func (s *Server) decrement(c echo.Context) error {
 //	@Produce		json
 //	@Param			request	body		DTO.SaveToFileRequestDTO	true	"SaveToFileRequestDTO"
 //	@Success		200		{object}	DTO.SaveToFileResponseDTO
+//	@Failure		401		{object}	DTO.ResponseDTO
 //	@Router			/saveToFile [post]
 //	@Security		BasicAuth
 func (s *Server) saveToFile(c echo.Context) error {
@@ -165,6 +170,7 @@ func (s *Server) saveToFile(c echo.Context) error {
 //	@Produce		json
 //	@Param			request	body		DTO.RetrieveFromFileRequestDTO	true	"RetrieveFromFileRequestDTO"
 //	@Success		200		{object}	DTO.RetrieveFromFileResponseDTO
+//	@Failure		401		{object}	DTO.ResponseDTO
 //	@Router			/retrieveFromFile [post]
 //	@Security		BasicAuth
 func (s *Server) retrieveFromFile(c echo.Context) error {

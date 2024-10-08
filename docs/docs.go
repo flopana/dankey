@@ -52,6 +52,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/DTO.DecrementResponseDTO"
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/DTO.ResponseDTO"
+                        }
                     }
                 }
             }
@@ -88,6 +94,12 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/DTO.DeleteResponseDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/DTO.ResponseDTO"
                         }
                     }
                 }
@@ -126,6 +138,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/DTO.GetResponseDTO"
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/DTO.ResponseDTO"
+                        }
                     }
                 }
             }
@@ -162,6 +180,12 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/DTO.IncrementResponseDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/DTO.ResponseDTO"
                         }
                     }
                 }
@@ -243,6 +267,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/DTO.RetrieveFromFileResponseDTO"
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/DTO.ResponseDTO"
+                        }
                     }
                 }
             }
@@ -279,6 +309,12 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/DTO.SaveToFileResponseDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/DTO.ResponseDTO"
                         }
                     }
                 }
