@@ -3,6 +3,8 @@ package RAM
 import "dankey/DTO"
 
 func (provider *RamProvider) Increment(request DTO.IncrementRequestDTO) DTO.IncrementResponseDTO {
+	provider.storageMutex.Lock()
+	defer provider.storageMutex.Unlock()
 	if _, ok := provider.storage[request.Database]; !ok {
 		provider.storage[request.Database] = make(map[string]any)
 	}

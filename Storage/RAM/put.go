@@ -3,6 +3,8 @@ package RAM
 import "dankey/DTO"
 
 func (provider *RamProvider) Put(request DTO.PutRequestDTO) DTO.PutResponseDTO {
+	provider.storageMutex.Lock()
+	defer provider.storageMutex.Unlock()
 	if !provider.checkIfDatabaseExists(request.Database) {
 		provider.storage[request.Database] = make(map[string]any)
 	}

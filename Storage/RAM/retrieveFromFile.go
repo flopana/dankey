@@ -23,6 +23,8 @@ func (provider *RamProvider) RetrieveFromFile(dto DTO.RetrieveFromFileRequestDTO
 	_, err = file.Read(data)
 
 	// Unmarshal the data
+	provider.storageMutex.Lock()
+	defer provider.storageMutex.Unlock()
 	err = bson.Unmarshal(data, &provider.storage)
 	if err != nil {
 		return defaultRetrieveErrorResponse(err, &dto)

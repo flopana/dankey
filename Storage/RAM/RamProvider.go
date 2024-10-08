@@ -2,16 +2,19 @@ package RAM
 
 import (
 	"dankey/Storage"
+	"sync"
 )
 
 type RamProvider struct {
-	storage map[uint]map[string]any
+	storageMutex *sync.RWMutex
+	storage      map[uint]map[string]any
 	Storage.Provider
 }
 
 func NewRamProvider() *RamProvider {
 	return &RamProvider{
-		storage: make(map[uint]map[string]any),
+		storageMutex: &sync.RWMutex{},
+		storage:      make(map[uint]map[string]any),
 	}
 }
 

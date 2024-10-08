@@ -3,6 +3,8 @@ package RAM
 import "dankey/DTO"
 
 func (provider *RamProvider) Get(request DTO.GetRequestDTO) DTO.GetResponseDTO {
+	provider.storageMutex.RLock()
+	defer provider.storageMutex.RUnlock()
 	if _, ok := provider.storage[request.Database]; !ok {
 		return DTO.GetResponseDTO{
 			ResponseDTO: DTO.ResponseDTO{

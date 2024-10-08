@@ -9,6 +9,8 @@ import (
 )
 
 func (provider *RamProvider) SaveToFile(dto DTO.SaveToFileRequestDTO) DTO.SaveToFileResponseDTO {
+	provider.storageMutex.RLock()
+	defer provider.storageMutex.RUnlock()
 	file, err := os.OpenFile(dto.FilePath, os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return defaultSaveErrorResponse(err, &dto)
