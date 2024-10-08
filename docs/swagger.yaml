@@ -130,8 +130,8 @@ info:
   description: This is a simple key-value store that allows you to store any JSON-serializable
     data under a key.
   license:
-    name: MIT
-    url: http://opensource.org/licenses/MIT
+    name: MPL
+    url: https://www.mozilla.org/en-US/MPL/2.0/
   title: Dankey API
   version: "1.0"
 paths:
@@ -156,6 +156,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/DTO.DecrementResponseDTO'
+      security:
+      - BasicAuth: []
       summary: Decrement a key-value pair
   /delete:
     delete:
@@ -177,6 +179,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/DTO.DeleteResponseDTO'
+      security:
+      - BasicAuth: []
       summary: Delete a key-value pair
   /get:
     get:
@@ -198,6 +202,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/DTO.GetResponseDTO'
+      security:
+      - BasicAuth: []
       summary: Get a key-value pair
   /increment:
     post:
@@ -220,6 +226,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/DTO.IncrementResponseDTO'
+      security:
+      - BasicAuth: []
       summary: Increment a key-value pair
   /put:
     put:
@@ -245,6 +253,8 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/DTO.ResponseDTO'
+      security:
+      - BasicAuth: []
       summary: Put a key-value pair
   /retrieveFromFile:
     post:
@@ -266,6 +276,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/DTO.RetrieveFromFileResponseDTO'
+      security:
+      - BasicAuth: []
       summary: Retrieve from file
   /saveToFile:
     post:
@@ -287,6 +299,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/DTO.SaveToFileResponseDTO'
+      security:
+      - BasicAuth: []
       summary: Save to file
 securityDefinitions:
   BasicAuth:

@@ -11,8 +11,8 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "contact": {},
         "license": {
-            "name": "MIT",
-            "url": "http://opensource.org/licenses/MIT"
+            "name": "MPL",
+            "url": "https://www.mozilla.org/en-US/MPL/2.0/"
         },
         "version": "{{.Version}}"
     },
@@ -21,6 +21,11 @@ const docTemplate = `{
     "paths": {
         "/decrement": {
             "post": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
                 "description": "Decrement the value of a key by 1. If they value is not an integer, an error will be returned.",
                 "consumes": [
                     "application/json"
@@ -53,6 +58,11 @@ const docTemplate = `{
         },
         "/delete": {
             "delete": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
                 "description": "Delete a key-value pair",
                 "consumes": [
                     "application/json"
@@ -85,6 +95,11 @@ const docTemplate = `{
         },
         "/get": {
             "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
                 "description": "Retrieve the JSON Object stored under a key",
                 "consumes": [
                     "application/json"
@@ -117,6 +132,11 @@ const docTemplate = `{
         },
         "/increment": {
             "post": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
                 "description": "Increment the value of a key by 1. If they value is not an integer, an error will be returned.",
                 "consumes": [
                     "application/json"
@@ -149,6 +169,11 @@ const docTemplate = `{
         },
         "/put": {
             "put": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
                 "description": "Put any JSON-serializable data under a key",
                 "consumes": [
                     "application/json"
@@ -187,6 +212,11 @@ const docTemplate = `{
         },
         "/retrieveFromFile": {
             "post": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
                 "description": "Retrieve the state of the database from a file",
                 "consumes": [
                     "application/json"
@@ -219,6 +249,11 @@ const docTemplate = `{
         },
         "/saveToFile": {
             "post": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
                 "description": "Save the current state of the database to a file",
                 "consumes": [
                     "application/json"
