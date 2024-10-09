@@ -125,6 +125,21 @@ definitions:
       success:
         type: boolean
     type: object
+  DTO.StatsResponseDTO:
+    properties:
+      goVersion:
+        type: string
+      ramUsage:
+        type: integer
+      ramUsageHumanReadable:
+        type: string
+      totalDatabases:
+        type: integer
+      totalKeys:
+        type: integer
+      totalRequests:
+        type: integer
+    type: object
 externalDocs:
   description: Visit the GitHub repository
   url: https://github.com/flopana/dankey
@@ -329,6 +344,24 @@ paths:
       security:
       - BasicAuth: []
       summary: Save to file
+  /stats:
+    get:
+      description: Get the stats of the server
+      operationId: stats
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/DTO.StatsResponseDTO'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/DTO.ResponseDTO'
+      security:
+      - BasicAuth: []
+      summary: Stats
 securityDefinitions:
   BasicAuth:
     type: basic

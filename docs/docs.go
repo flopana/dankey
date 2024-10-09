@@ -319,6 +319,35 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/stats": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the stats of the server",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Stats",
+                "operationId": "stats",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/DTO.StatsResponseDTO"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/DTO.ResponseDTO"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -513,6 +542,29 @@ const docTemplate = `{
                 },
                 "success": {
                     "type": "boolean"
+                }
+            }
+        },
+        "DTO.StatsResponseDTO": {
+            "type": "object",
+            "properties": {
+                "goVersion": {
+                    "type": "string"
+                },
+                "ramUsage": {
+                    "type": "integer"
+                },
+                "ramUsageHumanReadable": {
+                    "type": "string"
+                },
+                "totalDatabases": {
+                    "type": "integer"
+                },
+                "totalKeys": {
+                    "type": "integer"
+                },
+                "totalRequests": {
+                    "type": "integer"
                 }
             }
         }
