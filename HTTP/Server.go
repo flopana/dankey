@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"sync"
 	"sync/atomic"
+	"time"
 )
 
 type Server struct {
@@ -65,11 +66,26 @@ func (s *Server) startWithWaitGroup(wg *sync.WaitGroup) {
 }
 
 func (s *Server) testDankeyServer() {
-	_, err := http.Get("http://localhost:" + s.conf.Port)
-	if err != nil {
-		log.Err(err).Msg("")
-		log.Fatal().Msg("Dankey server failed to start up")
+	const maxRetries = 5
+	const delayBetweenRetries = 10 * time.Millisecond
+
+	err := error(nil)
+
+	for i := 0; i < maxRetries; i++ {
+		err = s.sendTestRequestToDankey()
+		if err == nil {
+			log.Info().Msgf("Dankey server started successfully on :%s", s.conf.Port)
+			log.Info().Msgf("Visit http://localhost:%s for the index page", s.conf.Port)
+			return
+		}
+		time.Sleep(delayBetweenRetries)
 	}
-	log.Info().Msgf("Dankey server started successfully on :%s", s.conf.Port)
-	log.Info().Msgf("Visit http://localhost:%s for the index page", s.conf.Port)
+
+	log.Err(err).Msg("")
+	log.Fatal().Msg("Dankey server failed to start up")
+}
+
+func (s *Server) sendTestRequestToDankey() error {
+	_, err := http.Get("http://localhost:" + s.conf.Port)
+	return err
 }
