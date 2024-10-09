@@ -10,4 +10,6 @@ type Provider interface {
 	Decrement(dto DTO.DecrementRequestDTO) DTO.DecrementResponseDTO
 	SaveToFile(dto DTO.SaveToFileRequestDTO) DTO.SaveToFileResponseDTO
 	RetrieveFromFile(dto DTO.RetrieveFromFileRequestDTO) DTO.RetrieveFromFileResponseDTO
+	GetTotalKeys() uint64
+	GetTotalDatabases() uint64
 }

@@ -40,6 +40,7 @@ func (s *Server) setRoutes() {
 		}
 		return false, nil
 	}))
+	basicAuthGroup.Use(s.logRequestCountMiddleware)
 
 	basicAuthGroup.PUT("/put", s.put)
 	basicAuthGroup.GET("/get", s.get)
@@ -48,6 +49,7 @@ func (s *Server) setRoutes() {
 	basicAuthGroup.POST("/decrement", s.decrement)
 	basicAuthGroup.POST("/saveToFile", s.saveToFile)
 	basicAuthGroup.POST("/retrieveFromFile", s.retrieveFromFile)
+	basicAuthGroup.GET("/stats", s.stats)
 }
 
 func generalHandlerFunc[ReqT DTO.RequestDTOType, ResT DTO.ResponseDTOType](c echo.Context, f func(ReqT) ResT) error {
@@ -63,6 +65,15 @@ func generalHandlerFunc[ReqT DTO.RequestDTOType, ResT DTO.ResponseDTOType](c ech
 
 	res := f(req)
 	return c.JSON(http.StatusOK, res)
+}
+
+func (s *Server) logRequestCountMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		go func() {
+			s.requestCount.Add(1)
+		}()
+		return next(c)
+	}
 }
 
 // Put a key-value pair
@@ -175,4 +186,19 @@ func (s *Server) saveToFile(c echo.Context) error {
 //	@Security		BasicAuth
 func (s *Server) retrieveFromFile(c echo.Context) error {
 	return generalHandlerFunc(c, s.Provider.RetrieveFromFile)
+}
+
+// Stats
+//
+//	@Summary		Stats
+//	@Description	Get the stats of the server
+//	@ID				stats
+//	@Produce		json
+//	@Success		200		{object}	DTO.StatsResponseDTO
+//	@Failure		401		{object}	DTO.ResponseDTO
+//	@Router			/stats [get]
+//	@Security		BasicAuth
+func (s *Server) stats(c echo.Context) error {
+	res := s.getStats()
+	return c.JSONPretty(http.StatusOK, res, "  ")
 }

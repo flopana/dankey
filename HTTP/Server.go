@@ -7,12 +7,14 @@ import (
 	"github.com/rs/zerolog/log"
 	"net/http"
 	"sync"
+	"sync/atomic"
 )
 
 type Server struct {
-	Provider Storage.Provider
-	Echo     *echo.Echo
-	conf     *Config.Config
+	Provider     Storage.Provider
+	Echo         *echo.Echo
+	conf         *Config.Config
+	requestCount *atomic.Uint64
 }
 
 // NewServer
@@ -26,10 +28,13 @@ type Server struct {
 //	@license.url				https://www.mozilla.org/en-US/MPL/2.0/
 //	@securityDefinitions.basic	BasicAuth
 func NewServer(provider Storage.Provider, config *Config.Config) *Server {
+	requestCount := atomic.Uint64{}
+	requestCount.Store(0)
 	return &Server{
-		Provider: provider,
-		Echo:     echo.New(),
-		conf:     config,
+		Provider:     provider,
+		Echo:         echo.New(),
+		conf:         config,
+		requestCount: &requestCount,
 	}
 }
 
